@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <ul>
+      <li
+        v-for="arb in arbs"
+        :key="arb.id"
+      >{{ arb.text }}</li>
+    </ul>
     <header class="page-header"></header>
     <section class="wrapper">
       <form class="new-todo-form">
@@ -17,6 +23,22 @@
           class="new-todo-button"
         >Add</button>
       </form>
+      <form class="new-todo-form">
+        <label class="new-todo-label">
+          New Arb:
+          <input
+            v-model="newArb"
+            type="text"
+            class="new-todo-input"
+          />
+        </label>
+        <button
+          type="submit"
+          @click.prevent="addArb()"
+          class="new-todo-button"
+        >Add</button>
+      </form>
+
       <ul class="todo-list">
         <li
           v-for="todo in todos"
@@ -82,7 +104,7 @@
 </template>
 
 <script>
-import { todosCollection } from '../firebase';
+import { todosCollection, arbCollection } from '../firebase';
 export default {
   name: 'app',
   data () {
@@ -90,12 +112,15 @@ export default {
       newTodo: '',
       todos: [],
       currentlyEditing: null,
-      todoEditText: ''
+      todoEditText: '',
+      newArb: '',
+      arbs: []
     }
   },
   firestore () {
     return {
-      todos: todosCollection.orderBy('createdAt', 'desc')
+      todos: todosCollection.orderBy('createdAt', 'desc'),
+      arbs: arbCollection.orderBy('createdAt', 'desc')
     }
   },
   methods: {
@@ -103,6 +128,20 @@ export default {
       todosCollection.add({
         text: this.newTodo,
         completed: false,
+        id: this.todos.length,
+        createdAt: new Date()
+      })
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
+      this.newTodo = '';
+    },
+    addArb () {
+      arbCollection.add({
+        text: this.newArb,
         id: this.todos.length,
         createdAt: new Date()
       })
