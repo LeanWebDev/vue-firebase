@@ -131,12 +131,12 @@ export default {
         id: this.todos.length,
         createdAt: new Date()
       })
-        .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function (error) {
-          console.error("Error adding document: ", error);
-        });
+      // .then(function (docRef) {
+      //   console.log("Document written with ID: ", docRef.id);
+      // })
+      // .catch(function (error) {
+      //   console.error("Error adding document: ", error);
+      // });
       this.newTodo = '';
     },
     addArb () {
