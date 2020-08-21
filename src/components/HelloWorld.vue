@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { todosCollection, arbCollection } from '../firebase';
+import { todosCollection, arbCollection } from '../plugins/firebase';
 export default {
   name: 'app',
   data () {
